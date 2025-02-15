@@ -11,7 +11,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views/"));
 
 app.get('/', async (req, res) => {
-	res.render("index", { time: new Date().toLocaleString() });
+	res.render("home", { time: new Date().toLocaleString() });
 });
 
 app.listen(port, () => {
