@@ -11,35 +11,29 @@ const db = new sql.Database(path.join(__dirname, "../database.db"), (err) => {
     console.log(util.styleText("yellow", "INFO: ") + "Banco de dados carregado!");
 });
 
+async function getRowsFromTable(table_name) {
+    const query_rows = await new Promise((resolve, reject) => {
+        db.all(`SELECT * FROM ${table_name}`, (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+
+    return query_rows;
+}
+
 class Appointments {
     static async getAppointments() {
-        const appointments_rows = await new Promise((resolve, reject) => {
-            db.all("SELECT * FROM appointments", (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(rows);
-                }
-            });
-        });
-
-        return appointments_rows;
+        return await getRowsFromTable("appointments");
     }
 }
 
 class Services {
     static async getServices() {
-        const service_rows = await new Promise((resolve, reject) => {
-            db.all("SELECT * FROM services", (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(rows);
-                }
-            });
-        });
-
-        return service_rows;
+        return await getRowsFromTable("services");
     }
 }
 
