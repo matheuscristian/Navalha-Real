@@ -12,8 +12,16 @@ app.use(express.static(path.join(__dirname, "static/")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views/"));
 
-app.get('/', async (req, res) => {
-	res.render("home", { services: await db.Services.getServices() });
+app.get('/', (req, res) => {
+	res.redirect("/sobre");
+});
+
+app.get("/sobre", (req, res) => {
+	res.render("sobre");
+});
+
+app.get("/agendar", async (req, res) => {
+	res.render("agendamento", { services: await db.Services.getServices(), appointments: await db.Appointments.getAppointments() });
 });
 
 app.listen(port, () => {
