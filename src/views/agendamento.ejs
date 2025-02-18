@@ -23,23 +23,18 @@
             <h1 class="text-center">AGENDAMENTO</h1>
           </div>
 
-          <form action="" class="p-4">
+          <form action="" class="p-4" method="post">
 
             <div class="form-group d-flex justify-content-between align-items-center w-75 mx-auto">
-              <label for="appointment-date" class="control-label">Data: </label>
-              <input class="form-control w-50" type="date" id="appointment-date" name="appointment-date">
-            </div>
-
-            <div class="form-group d-flex justify-content-between align-items-center w-75 mx-auto mt-2">
-              <label for="appointment-time" class="control-label">Hora: </label>
-              <input class="form-control w-50" type="time" id="appointment-time" name="appointment-time">
+              <label for="appointment-datetime" class="control-label">Data: </label>
+              <input class="form-control w-50" type="datetime-local" id="appointment-datetime" name="appointment-datetime">
             </div>
 
             <div class="form-group d-flex justify-content-between align-items-center w-75 mx-auto mt-2">
               <label class="control-label" for="service-select">Selecione o tipo de serviço: </label>
               <select class="form-control w-50" id="service-select" name="service-select">
                 <% services.forEach(service => { %>
-                <option><%= service.service_name %></option>
+                <option><%= service.service_name %> - R$<%= service.price %></option>
                 <% }); %>
               </select>
             </div>
