@@ -27,7 +27,29 @@ async function getRowsFromTable(table_name) {
 
 class Appointments {
     static async getAppointments() {
-        return await getRowsFromTable("appointments");
+        const appointments = await getRowsFromTable("appointments");
+
+        return appointments.filter((v) => {
+            const dateDiff = new Date(v.appointment_date).getTime() - new Date().getTime();
+
+            if (dateDiff >= 0 && dateDiff < 2592000000) {
+                return v;
+            }
+        });
+    }
+
+    static async setNewAppointment(client_name, client_email, client_phone, appointment_date, status, service_id) {
+        db.all(`SELECT id, service_name FROM services WHERE service_name = '${service_id.split('-')[0].trim()}';`, (err, rows) => {
+            if (err) {
+                console.error(err);
+            } else {
+                db.run(`INSERT INTO appointments (client_name, client_email, client_phone, appointment_date, status, service_id) VALUES ('${client_name}', '${client_email}', '${client_phone}', '${appointment_date}', '${status}', ${rows[0].id});`, (err) => {
+                    if (err) {
+                        console.error(err);
+                    }
+                });
+            }
+        });
     }
 }
 

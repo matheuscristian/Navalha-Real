@@ -31,7 +31,9 @@ app.get("/agendar", async (req, res) => {
 app.post("/agendar", (req, res) => {
 	console.log(util.styleText("yellow", "INFO: ") + "Recebendo informações POST de '/agendar'...");
 	console.log(req.body);
-	
+
+	db.Appointments.setNewAppointment("test", "test@email.com", req.body["client-tel"], req.body["appointment-datetime"], "agendado", req.body["service-type"]);
+
 	res.redirect("/agendar");
 });
 

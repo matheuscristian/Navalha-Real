@@ -7,55 +7,70 @@
   <title>Navalha Real</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="css/index.css" rel="stylesheet">
+  <script src="js/validateForm.js"></script>
+
+  <script>
+    const services = JSON.parse('<%- JSON.stringify(services) %>');
+    const appointments = JSON.parse('<%- JSON.stringify(appointments) %>');
+  </script>
 </head>
 
 <body>
   <%- include('components/header') %>
 
-  <div class="container-fluid p-4">
-    <div class="row w-100 justify-content-around align-items-center">
+    <div class="container-fluid p-4">
+      <div class="row w-100 justify-content-around align-items-center">
 
-      <div class="col-lg-7 col-12">
+        <div class="col-lg-7 col-12">
 
-        <div class="w-75 rounded mx-auto" id="form-container">
+          <div class="w-75 rounded mx-auto" id="form-container">
 
-          <div class="w-100 p-1 rounded" id="form-header">
-            <h1 class="text-center">AGENDAMENTO</h1>
+            <div class="w-100 p-1 rounded" id="form-header">
+              <h1 class="text-center">AGENDAMENTO</h1>
+            </div>
+
+            <form onsubmit="return validateForm(this, services, appointments)" class="p-4" method="post">
+
+              <div class="form-group d-flex justify-content-between align-items-center w-75 mx-auto">
+                <label for="appointment-datetime" class="control-label">Data: </label>
+                <input class="form-control w-50" type="datetime-local" id="appointment-datetime"
+                  name="appointment-datetime">
+              </div>
+
+              <div class="form-group d-flex justify-content-between align-items-center w-75 mx-auto mt-2">
+                <label class="control-label" for="service-type">Selecione o tipo de serviço: </label>
+                <select class="form-control w-50" id="service-select" name="service-type">
+                  <% services.forEach(service=> { %>
+                    <option>
+                      <%= service.service_name %> - R$<%= service.price %>
+                    </option>
+                    <% }); %>
+                </select>
+              </div>
+
+              <div class="form-group d-flex justify-content-between align-items-center w-75 mx-auto mt-2">
+                <label class="control-label" for="client-tel">Digite seu número</label>
+                <input class="form-control w-50" type="tel" id="client-tel" name="client-tel">
+              </div>
+
+              <div class="form-group d-flex justify-content-center align-items-center">
+                <button type="submit" class="btn btn-primary mt-5">Realizar Agendamento</button>
+              </div>
+
+            </form>
+
           </div>
 
-          <form action="" class="p-4" method="post">
-
-            <div class="form-group d-flex justify-content-between align-items-center w-75 mx-auto">
-              <label for="appointment-datetime" class="control-label">Data: </label>
-              <input class="form-control w-50" type="datetime-local" id="appointment-datetime" name="appointment-datetime">
-            </div>
-
-            <div class="form-group d-flex justify-content-between align-items-center w-75 mx-auto mt-2">
-              <label class="control-label" for="service-select">Selecione o tipo de serviço: </label>
-              <select class="form-control w-50" id="service-select" name="service-select">
-                <% services.forEach(service => { %>
-                <option><%= service.service_name %> - R$<%= service.price %></option>
-                <% }); %>
-              </select>
-            </div>
-
-            <div class="form-group d-flex justify-content-center align-items-center">
-              <button type="submit" class="btn btn-primary mt-5">Realizar Agendamento</button>
-            </div>
-
-          </form>
-
         </div>
 
-      </div>
-
-      <div class="col-lg-5 col-12 d-lg-block d-none">
-        <div class="d-flex justify-content-center w-100">
-          <img src="images/barbershop.jpg" alt="img" class="img-fluid" width="82%">
+        <div class="col-lg-5 col-12 d-lg-block d-none">
+          <div class="d-flex justify-content-center w-100">
+            <img src="images/barbershop.jpg" alt="img" class="img-fluid" width="82%">
+          </div>
         </div>
+        
       </div>
     </div>
-  </div>
 
 </body>
 
