@@ -29,10 +29,11 @@ class Appointments {
     static async getAppointments() {
         const appointments = await getRowsFromTable("appointments");
 
+        // Somente envia os agendamentos válidos (do dia de hoje até 30 dias depois)
         return appointments.filter((v) => {
-            const dateDiff = new Date(v.appointment_date).getTime() - new Date().getTime();
+            const dateDiff = (new Date(v.appointment_date) - new Date()) / 86400000;
 
-            if (dateDiff >= 0 && dateDiff < 2592000000) {
+            if (dateDiff >= 0 && dateDiff <= 30) {
                 return v;
             }
         });
