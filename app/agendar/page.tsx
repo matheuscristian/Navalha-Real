@@ -1,7 +1,9 @@
 import AppointmentForm from "@/components/AppointmentForm";
+import { getServices } from "@/utils/database";
 
-export default function Page() {
-
+export default async function Page() {
+    const services = await getServices();
+    
     return (
         <div className="flex flex-col justify-center items-center flex-1 self-center justify-self-center">
             <div className="bg-gray-200 container lg:w-[1024] shadow-xl rounded-md">
@@ -25,7 +27,7 @@ export default function Page() {
                         </p>
                     </div>
                     <div className="w-[1px] bg-black/20 md:block hidden"></div>
-                    <AppointmentForm />
+                    <AppointmentForm services={services} />
                 </div>
             </div>
         </div>

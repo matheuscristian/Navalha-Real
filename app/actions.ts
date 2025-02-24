@@ -1,11 +1,17 @@
 "use server";
 
+import { Appointment, setNewAppointment } from "@/utils/database";
 import { redirect } from "next/navigation";
 import z from "zod";
 
 const schema = z.object({
-    service: z.string().min(1, "O serviço é obrigatório"),
-    date: z.string().refine(
+    service_id: z.string().refine(
+        (value) => !Number.isNaN(Number.parseInt(value, 10)),
+        { 
+            message: "Era esperado o número de ID do serviço" 
+        }
+    ),
+    appointment_date: z.string().refine(
         (value) => {
             const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
             if (!regex.test(value)) return false;
@@ -25,9 +31,8 @@ const schema = z.object({
             message: "A data deve estar entre hoje e 30 dias no futuro.",
         }
     ),
-    tel: z.string().refine(
+    client_phone: z.string().refine(
         (value) => {
-            // Valida o formato do telefone (exemplo: (XX) XXXX-XXXX ou (XX) XXXXX-XXXX)
             const regex = /^\(?\d{2}\)?[\s-]?\d{4,5}[\s-]?\d{4}$/;
             return regex.test(value);
         },
@@ -39,13 +44,10 @@ const schema = z.object({
 
 export async function validateAppointmentForm(prevState: any, formData: FormData): Promise<any> {
     const validatedFields = schema.safeParse({
-        service: formData.get("service"),
-        date: formData.get("date"),
-        tel: formData.get("tel"),
+        service_id: formData.get("service"),
+        appointment_date: formData.get("date"),
+        client_phone: formData.get("tel"),
     });
-
-    console.log(validatedFields.data);
-    console.log(validatedFields.error);
 
     if (!validatedFields.success) {
         return {
@@ -53,5 +55,7 @@ export async function validateAppointmentForm(prevState: any, formData: FormData
         };
     }
 
-    redirect("/agendar");
+    setNewAppointment(validatedFields.data as Partial<Appointment>);
+
+    redirect("/agendar/ok");
 }
