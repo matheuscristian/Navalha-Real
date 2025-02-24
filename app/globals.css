@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sobre-pic-1 {
+    background-image: url("/sobre-pic-1.jpg");
+    @apply bg-cover bg-no-repeat bg-center;
+}
