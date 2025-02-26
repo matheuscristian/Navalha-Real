@@ -3,14 +3,14 @@ import sql from "sqlite3";
 const db = new sql.Database("database.db");
 
 export interface Service {
-    id: number,
+    id?: number,
     service_name: string,
     price: number,
     duration: number
 }
 
 export interface Appointment {
-    id: string,
+    id?: string,
     client_name: string,
     client_email: string,
     client_phone: string,
@@ -20,7 +20,7 @@ export interface Appointment {
 }
 
 export interface User {
-    id: number,
+    id?: number,
     name: string,
     email: string,
     password: string
@@ -38,8 +38,8 @@ export async function getServices(): Promise<Service[]> {
     });
 }
 
-export function setNewAppointment(apt_data: Partial<Appointment>) {
-    db.run(`INSERT INTO appointments (client_name, client_email, client_phone, appointment_date, status, service_id) VALUES ('test', 'example@email.com', '${apt_data.client_phone}', '${apt_data.appointment_date}', 'agendado', '${apt_data.service_id}');`, (err) => {
+export function setNewAppointment(apt_data: Appointment) {
+    db.run(`INSERT INTO appointments (client_name, client_email, client_phone, appointment_date, status, service_id) VALUES ('${apt_data.client_name}', '${apt_data.client_email}', '${apt_data.client_phone}', '${apt_data.appointment_date}', 'agendado', '${apt_data.service_id}');`, (err) => {
         if (err) {
             console.log(err);
         }

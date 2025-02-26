@@ -1,15 +1,19 @@
 "use client";
 
 import { validateAppointmentForm } from "@/app/actions";
-import { useActionState } from "react";
+import { FormEvent, useActionState } from "react";
 import Button from "./Button";
-import { Service } from "@/utils/database";
+import { Service, User } from "@/utils/database";
 
-export default function AppointmentForm({ services }: { services: Service[] }) {
+export default function AppointmentForm({ services, user }: { services: Service[], user: User }) {
     const [state, formAction, pending] = useActionState(validateAppointmentForm, { errors: [] });
 
+    const onSubmit = (e: FormData) => {
+        formAction({ formData: e, user });
+    }
+
     return (
-        <form action={formAction} className="flex items-center justify-around flex-col gap-6 p-6 w-full md:w-1/2">
+        <form action={(e) => onSubmit(e)} className="flex items-center justify-around flex-col gap-6 p-6 w-full md:w-1/2">
             <div>
                 <div className="max-w-64">
                     <label htmlFor="service" className="block mb-1 text-gray-500">

@@ -1,9 +1,21 @@
 import AppointmentForm from "@/components/AppointmentForm";
-import { getServices } from "@/utils/database";
+import { getServices, User } from "@/utils/database";
+import { cookies } from "next/headers";
+import { redirect } from 'next/navigation';
+import jwt from 'jsonwebtoken';
 
 export default async function Page() {
     const services = await getServices();
     
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("token")?.value;
+
+    if (!token) {
+        redirect("/login");
+    }
+
+    const decoded = jwt.verify(token, 'dntsf54nhh5zLIIQxJmBGReG3pLelaEIBqocjvvoyrw=');
+
     return (
         <div className="flex flex-col justify-center items-center flex-1 self-center justify-self-center">
             <div className="bg-gray-200 container lg:w-[1024] shadow-xl rounded-md">
@@ -27,7 +39,7 @@ export default async function Page() {
                         </p>
                     </div>
                     <div className="w-[1px] bg-black/20 md:block hidden"></div>
-                    <AppointmentForm services={services} />
+                    <AppointmentForm services={services} user={decoded as User} />
                 </div>
             </div>
         </div>

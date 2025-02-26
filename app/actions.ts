@@ -1,6 +1,6 @@
 "use server";
 
-import { Appointment, setNewAppointment } from "@/utils/database";
+import { Appointment, setNewAppointment, User } from "@/utils/database";
 import { redirect } from "next/navigation";
 import z from "zod";
 
@@ -42,7 +42,7 @@ const schema = z.object({
     ),
 });
 
-export async function validateAppointmentForm(prevState: any, formData: FormData): Promise<any> {
+export async function validateAppointmentForm(prevState: any, {formData, user}: {formData: FormData, user: User}): Promise<any> {
     const validatedFields = schema.safeParse({
         service_id: formData.get("service"),
         appointment_date: formData.get("date"),
@@ -55,7 +55,16 @@ export async function validateAppointmentForm(prevState: any, formData: FormData
         };
     }
 
-    setNewAppointment(validatedFields.data as Partial<Appointment>);
+    const appointmentFields: Appointment = {
+        appointment_date: validatedFields.data.appointment_date,
+        client_email: user.email,
+        client_name: user.name,
+        client_phone: validatedFields.data.client_phone,
+        service_id: validatedFields.data.service_id,
+        status: "agendado"
+    }
+
+    setNewAppointment(appointmentFields);
 
     redirect("/agendar/ok");
 }
