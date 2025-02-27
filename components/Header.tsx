@@ -2,9 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Cookie from "js-cookie";
+import { useEffect, useState } from "react";
 
 export default function Header() {
     const navDestinations = ["/sobre", "/agendar"];
+
+    const [loginPath, setLoginPath] = useState("/login");
+
+    useEffect(() => {
+        setLoginPath(Cookie.get("token") ? "/logout" : "/login");
+    }, [usePathname()]);
 
     return (
         <header className="w-full flex justify-between items-center p-8 bg-neutral-600 shadow">
@@ -19,6 +27,11 @@ export default function Header() {
                         </Link>
                     </li>
                 ))}
+                <li>
+                    <Link href={loginPath} className={`hover:underline ${usePathname() == loginPath && "text-blue-200"}`}>
+                        {loginPath.slice(1)}
+                    </Link>
+                </li>
             </ul>
         </header>
     );

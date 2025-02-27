@@ -1,5 +1,6 @@
 import AppointmentForm from "@/components/AppointmentForm";
-import { getServices, User } from "@/utils/database";
+import AppointmentList from "@/components/AppointmentList"
+import { getServices, getUserAppointments, User } from "@/utils/database";
 import { cookies } from "next/headers";
 import { redirect } from 'next/navigation';
 import jwt from 'jsonwebtoken';
@@ -14,7 +15,9 @@ export default async function Page() {
         redirect("/login");
     }
 
-    const decoded = jwt.verify(token, 'dntsf54nhh5zLIIQxJmBGReG3pLelaEIBqocjvvoyrw=');
+    const userData = jwt.verify(token, 'dntsf54nhh5zLIIQxJmBGReG3pLelaEIBqocjvvoyrw=') as User;
+    
+    const appointments = await getUserAppointments(userData.email);
 
     return (
         <div className="flex flex-col justify-center items-center flex-1 self-center justify-self-center">
@@ -22,24 +25,10 @@ export default async function Page() {
                 <div className="p-4 flex justify-center bg-gray-300 rounded-md">
                     <h1 className="uppercase text-lg font-bold">agendamento</h1>
                 </div>
-                <div className="flex justify-between w-full min-h-[550px]">
-                    <div className="md:flex flex-col hidden w-1/2 p-6 text-justify gap-2">
-                        <p>
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis consequatur nobis, autem
-                            vitae quos molestias animi accusamus perferendis possimus dignissimos, reprehenderit ipsa
-                            nostrum cumque, nulla voluptate explicabo numquam fuga iure.
-                        </p>
-                        <p>
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis consequatur nobis, autem
-                            vitae quos molestias animi accusamus perferendis possimus dignissimos, reprehenderit ipsa
-                            nostrum cumque, nulla voluptate explicabo numquam fuga iure. Lorem ipsum dolor, sit amet
-                            consectetur adipisicing elit. Veritatis consequatur nobis, autem vitae quos molestias animi
-                            accusamus perferendis possimus dignissimos, reprehenderit ipsa nostrum cumque, nulla
-                            voluptate explicabo numquam fuga iure.
-                        </p>
-                    </div>
+                <div className="flex flex-col md:flex-row justify-between w-full h-[550px]">
+                    <AppointmentList appointments={appointments} services={services} />
                     <div className="w-[1px] bg-black/20 md:block hidden"></div>
-                    <AppointmentForm services={services} user={decoded as User} />
+                    <AppointmentForm services={services} user={userData} />
                 </div>
             </div>
         </div>

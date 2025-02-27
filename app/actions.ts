@@ -1,6 +1,6 @@
 "use server";
 
-import { Appointment, setNewAppointment, User } from "@/utils/database";
+import { Appointment, cancelAppointmentByID, setNewAppointment, User } from "@/utils/database";
 import { redirect } from "next/navigation";
 import z from "zod";
 
@@ -67,4 +67,8 @@ export async function validateAppointmentForm(prevState: any, {formData, user}: 
     setNewAppointment(appointmentFields);
 
     redirect("/agendar/ok");
+}
+
+export async function cancelAppointment(_: any, id: string) {
+    cancelAppointmentByID(id);
 }

@@ -3,10 +3,10 @@ import sql from "sqlite3";
 const db = new sql.Database("database.db");
 
 export interface Service {
-    id?: number,
+    id?: string,
     service_name: string,
-    price: number,
-    duration: number
+    price: string,
+    duration: string
 }
 
 export interface Appointment {
@@ -20,7 +20,7 @@ export interface Appointment {
 }
 
 export interface User {
-    id?: number,
+    id?: string,
     name: string,
     email: string,
     password: string
@@ -33,6 +33,18 @@ export async function getServices(): Promise<Service[]> {
                 rej(err);
             } else {
                 res(rows as Service[]);
+            }
+        });
+    });
+}
+
+export async function getUserAppointments(client_email: string): Promise<Appointment[]> {
+    return new Promise((res, rej) => {
+        db.all("SELECT * FROM appointments WHERE client_email=?;", [client_email], (err, rows) => {
+            if (err) {
+                rej(err);
+            } else {
+                res(rows as Appointment[]);
             }
         });
     });
@@ -60,6 +72,14 @@ export async function selectUserByEmail(email: string): Promise<User> {
 
 export function setNewUser(name: string, email: string, password: string) {
     db.run(`INSERT INTO users (name, email, password) VALUES ('${name}', '${email}', '${password}');`, (err) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
+
+export function cancelAppointmentByID(id: string) {
+    db.run("UPDATE appointments SET status='cancelado' WHERE id=?;", [id], (err) => {
         if (err) {
             console.log(err);
         }

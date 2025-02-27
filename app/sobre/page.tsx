@@ -1,6 +1,6 @@
 import { LinkButton } from "@/components/Button";
 
-export default function Page() {
+export default async function Page() {
     return (
         <div className="flex flex-col justify-center items-center flex-1">
             <div className="w-full sobre-pic-1 shadow-2xl">
@@ -10,7 +10,7 @@ export default function Page() {
             </div>
             <div className="p-4 lg:p-10 flex flex-col gap-16 xl:gap-36 items-center container lg:text-xl">
                 <p className="text-justify">
-                    No Navalha Real, acreditamos que um bom corte de cabelo vai além da estética – ele é uma expressão
+                    No Navalha Real, acreditamos que um bom corte de cabelo vai além da estética - ele é uma expressão
                     de identidade, confiança e poder. Com anos de experiência no mercado da beleza masculina e um
                     compromisso inabalável com a qualidade, nos tornamos referência para homens que buscam não apenas um
                     corte, mas uma verdadeira experiência de cuidado e sofisticação. Nosso ambiente foi pensado para
