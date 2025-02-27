@@ -3,7 +3,7 @@ import { LinkButton } from "@/components/Button";
 export default async function Page() {
     return (
         <div className="flex flex-col justify-center items-center flex-1">
-            <div className="w-full sobre-pic-1 shadow-2xl">
+            <div className="w-full sobre-pic-1 shadow-md">
                 <div className="min-h-[250px] backdrop-blur-md bg-black/30 flex justify-center items-center">
                     <h1 className="text-amber-500 text-4xl sm:text-7xl">NAVALHA REAL</h1>
                 </div>
