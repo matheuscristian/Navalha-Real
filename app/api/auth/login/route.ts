@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 			return new Response(JSON.stringify({ message: 'Email ou senha inválidos' }), { status: 401 });
 		}
 
-		const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, 'dntsf54nhh5zLIIQxJmBGReG3pLelaEIBqocjvvoyrw=');
+		const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, process.env.JWT_HASH as string);
 
 		return new Response(
 			JSON.stringify({ message: 'Login Sucedido', token }),

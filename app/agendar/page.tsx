@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 
 export default async function Page() {
     const services = await getServices();
-    
+
     const cookiesStore = await cookies();
     const token = cookiesStore.get("token")?.value;
 
@@ -15,8 +15,8 @@ export default async function Page() {
         redirect("/login");
     }
 
-    const userData = jwt.verify(token, 'dntsf54nhh5zLIIQxJmBGReG3pLelaEIBqocjvvoyrw=') as User;
-    
+    const userData = jwt.verify(token, process.env.JWT_HASH as string) as User;
+
     const appointments = await getUserAppointments(userData.email);
 
     return (
