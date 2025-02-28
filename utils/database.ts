@@ -40,7 +40,7 @@ export async function getServices(): Promise<Service[]> {
 
 export async function getUserAppointments(client_email: string): Promise<Appointment[]> {
     return new Promise((res, rej) => {
-        db.all("SELECT * FROM appointments WHERE client_email=?;", [client_email], (err, rows) => {
+        db.all("SELECT * FROM appointments WHERE client_email=? ORDER BY appointment_date DESC;", [client_email], (err, rows) => {
             if (err) {
                 rej(err);
             } else {
